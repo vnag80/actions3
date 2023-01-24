@@ -1,0 +1,65 @@
+name: Events Demo 1
+on: 
+  push:
+    branches:
+       - 'main'
+       - 'master'
+       - 'noactionsrun'
+  workflow_dispatch:
+  pull_request:
+     type: opened
+     branches:
+        - 'dev-**'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output event data
+        run: echo "${{ toJSON(github.event) }}"
+      - name: load & cach
+        uses: ./.github/Actions/cached-deps
+      - name: Test code
+        run: npm run test
+           
+  build:
+    needs: test 
+    runs-on: ubuntu-latest
+    outputs:
+        script-file: ${{steps.publish.outputs.scriptfile}}
+    steps:   
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Cashing Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{hashFiles('**/package-lock.json')}}  
+      - name: Install dependencies
+        run: npm ci   
+      - name: Build code
+        run: npm run build
+      - name: get Job output
+        id: publish
+        run: find dist/assets/*.js -type  f -execdir echo 'script-file={}'  >> $GITHUB_OUTPUT ';'
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: |
+             dist
+             package.json
+
+  deploy:
+    needs: build  
+    runs-on: ubuntu-latest
+    steps:  
+      - name: download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-files
+      - name: list dist files
+        run: ls
+      - name: Using Output
+        run: echo ${{needs.build.outputs.script-file}}
+      - name: Deploy project
+        run: echo "Deploying..."      
