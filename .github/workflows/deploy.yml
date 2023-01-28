@@ -17,7 +17,7 @@ jobs:
       - name: Output event data
         run: echo "${{ toJSON(github.event) }}"
       - name: Get code
-        uses: actions/checkout@v3  
+        uses: actions/checkout@v3 
       - name: load & cach
         uses: ./.github/Actions/cached-deps
       - name: Test code
@@ -31,12 +31,8 @@ jobs:
     steps:   
       - name: Get code
         uses: actions/checkout@v3
-      - name: Cashing Dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: deps-node-modules-${{hashFiles('**/package-lock.json')}}  
-      - name: Install dependencies
+      - name: load & cach
+        uses: ./.github/Actions/cached-deps
         run: npm ci   
       - name: Build code
         run: npm run build
