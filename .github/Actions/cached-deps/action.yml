@@ -4,6 +4,9 @@ inputs:
    description: 'Sample Input variable'
    required: false
    default: 'true'
+outputs:
+   cache-value:
+      description: 'Cache used output file'   
 Description: 'Get Dependencies and Casching'
 runs:
    using: 'composite'
