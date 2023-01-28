@@ -23,7 +23,9 @@ jobs:
         with:
           cache: 'false'
       - name: Test code
-        run: npm run test
+        run: |
+          npm run test
+          echo '${{steps.cache-load.outputs.cache-value}}'
            
   build:
     needs: test 
@@ -48,7 +50,7 @@ jobs:
           path: |
              dist
              package.json
-             echo '${{steps.cache-load.outputs.cache-value}}'
+             
 
   deploy:
     needs: build  
