@@ -1,4 +1,9 @@
 name: 'Get & Cache dependencies'
+inputs: 
+  cache:
+   description: 'Sample Input variable'
+   required: false
+   default: 'true'
 Description: 'Get Dependencies and Casching'
 runs:
    using: 'composite'
@@ -11,6 +16,8 @@ runs:
           path: ~/.npm
           key: deps-node-modules-${{hashFiles('**/package-lock.json')}}
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
+          echo inputs.cache
         shell: bash
  
