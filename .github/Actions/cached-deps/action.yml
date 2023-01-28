@@ -6,7 +6,9 @@ inputs:
    default: 'true'
 outputs:
    cache-value:
-      description: 'Cache used output file'   
+      description: 'Cache used output file' 
+      value: ${{steps.install.outputs.cache}}
+
 Description: 'Get Dependencies and Casching'
 runs:
    using: 'composite'
@@ -19,8 +21,10 @@ runs:
           path: ~/.npm
           key: deps-node-modules-${{hashFiles('**/package-lock.json')}}
       - name: Install dependencies
+        id: install
         run: |
           npm ci
           echo ${{inputs.cache}}
+          echo "::set-output name=cache::'${{inputs.cache}}'"
         shell: bash
  
