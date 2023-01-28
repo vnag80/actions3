@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Output event data
         run: echo "${{ toJSON(github.event) }}"
+      - name: Get code
+        uses: actions/checkout@v3  
       - name: load & cach
         uses: ./.github/Actions/cached-deps
       - name: Test code
