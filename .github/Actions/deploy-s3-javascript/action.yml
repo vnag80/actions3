@@ -10,6 +10,9 @@ inputs:
    aws-region:
        description: 'aws region name'
        required: true
+ outputs:
+      web-url:
+          description: 'path name'      
 runs:
    using: 'node16'
    main:  'main.js'

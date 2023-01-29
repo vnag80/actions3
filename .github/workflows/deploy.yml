@@ -52,6 +52,7 @@ jobs:
              dist
              package.json
       - name: javascriptaction
+        id: s3upload
         uses: ./.github/Actions/deploy-s3-javascript     
         with: 
           bucket-name: my-git-action-custom-bucket
@@ -60,7 +61,8 @@ jobs:
         env:
            AWS_ACCESS_KEY_ID:  ${{secrets.AWS_ACCESS_KEY_ID}}
            AWS_SECRET_ACCESS_KEY:  ${{secrets.AWS_SECRET_ACCESS_KEY}}         
-             
+      - name: displayURL
+        run: echo '${{steps.s3upload.outputs.web-url}}'       
 
   deploy:
     needs: build  
