@@ -1,5 +1,15 @@
 name: 'Java-script sample pipeline'
 Description: "Description"
+inputs:
+   bucket-name:
+       description: 'bucket name'
+       required: true
+   dist-file-path:
+       description: 'dist file path'
+       required: true 
+   aws-region:
+       description: 'aws region name'
+       required: true
 runs:
    using: 'node16'
    main:  'main.js'
