@@ -1,0 +1,5 @@
+name: 'Java-script sample pipeline'
+Description: "Description"
+runs:
+   using: 'node16'
+   main:  'main.js'
